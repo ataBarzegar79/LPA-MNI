@@ -1,3 +1,5 @@
+from typing import Set, Any
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -30,6 +32,10 @@ class Graph:
         return self.graph.nodes.data()
 
     def get_nodes(self) -> list:
+        """
+        :return:
+            list[]: items of nodes , each node is int .
+        """
         return list(self.graph.nodes)
 
     def get_node_neighbours(self, node):
@@ -44,22 +50,11 @@ class Graph:
     def get_node_current_label(self, node):
         return self.graph.nodes.data()[node]['label']
 
-    def set_triangle_to_node(self, node: int, node_neighbour: int, common_triangles_count: int):
-        try:
-            self.graph.nodes[node]['triangle'][node_neighbour] = common_triangles_count
-        except:  # todo : add particular exception
-            self.graph.nodes[node]['triangle'] = {
-                node_neighbour: common_triangles_count
-            }
-
     def update_labels_in_graph(self, label, node):
         node_current_label = self.get_node_current_label(node)
         for other_node in self.get_nodes():
             if self.get_node_current_label(other_node) == node_current_label:
                 self.set_label_to_node(label, other_node)
-
-    def get_triangle_of_node(self, node: int) -> dict:
-        return self.graph.nodes[node]['triangle']
 
     def draw_graph(self):
         colors_reserved = {color: None for color in self.colors}
@@ -70,11 +65,6 @@ class Graph:
         node_colors = self.get_labels_as_color(colors_reserved)
         nx.draw_networkx(self.graph, node_color=node_colors)
         plt.show()
-
-    def calculate_random_walk_with_restart(self, node: int) -> dict:
-        return nx.pagerank(self.graph,
-                           personalization={k: (1 if int(k) == node else 0) for (k) in self.get_nodes()}
-                           )
 
     def set_value_to_color(self, colors_reserved: dict, node_label) -> dict:
         for key, value in colors_reserved.items():
@@ -91,8 +81,14 @@ class Graph:
             colors_as_label.append(label_color)
         return colors_as_label
 
-    def get_labels(self) -> list:
+    def get_labels(self) -> set[Any]:
         labels = set()
         for node in self.get_nodes():
             labels.add(self.get_node_current_label(node))
         return labels
+
+    def sort_graph_based_on_degree_centrality(self):
+        pass
+
+    def get_node_with_bigger_degree_centrality(self, *nodes: list) -> int:
+        pass
