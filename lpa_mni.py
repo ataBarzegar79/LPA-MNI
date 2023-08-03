@@ -11,11 +11,15 @@ class LpaMni:
         self.calculate_initial_commuinities_by_modularity_measure(nodes_with_degree_centrality_rate)
         self.calculate_final_communities_based_on_basic_lpa()
 
-    def initialize_unique_label_for_each_node(self, nodes: list):
-        pass
+    def initialize_unique_label_for_each_node(self, nodes: list) -> None:
+        for node in nodes:
+            self.graph.set_label_to_node(label=str(node), node=node)
 
     def get_nodes_based_on_degree_centrality_in_descending_order(self) -> list:
-        pass
+        nodes_with_degree_centrality = self.graph.sort_graph_based_on_degree_centrality()
+        sorted_items = sorted(nodes_with_degree_centrality.items(), key=lambda x: x[1], reverse=True)
+        # Extract the node identifiers (keys) from the sorted items and put them in a list
+        return [item[0] for item in sorted_items]
 
     def calculate_initial_commuinities_by_modularity_measure(self, nodes_with_degree_centrality_rate) -> None:
         pass
