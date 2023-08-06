@@ -88,7 +88,7 @@ class Graph:
         return labels
 
     def sort_graph_based_on_degree_centrality(self):
-        pass
+        return nx.degree_centrality(self.graph)
 
     def calculate_modularity(self):
         communities = dict()
