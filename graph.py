@@ -14,14 +14,14 @@ class Graph:
         self.graph_file_path = graph_file_path
         self.read_graph_from_path()
         self.colors = ['#C0C0C0', '#FF0000', '#800080', '#00FF00', '#faebd7',
-                       '#d2691e','#00ffff','#bdb76b','#9932cc','#ff1493',
-                       '#ffd700','#ff69b4','#4b0082','#7cfc00','#ffa07a',
-                       '#000080','#ffa500','#00ff7f','#9acd32','#f5f5f5',
-                       '#cacfd2','#7b7d7d','#909497','#9b59b6','#c0392b',
-                       '#d4efdf','#616a6b','#cacfd2','#7b7d7d','#909497',
-                       '#9b59b6','#5499c7','#2471a3','#5b2c6f','#117a65',
-                       '#a93226','#d4efdf','#85c1e9','#5499c7','#2471a3',
-                       '#5b2c6f','#117a65','#a93226',
+                       '#d2691e', '#00ffff', '#bdb76b', '#9932cc', '#ff1493',
+                       '#ffd700', '#ff69b4', '#4b0082', '#7cfc00', '#ffa07a',
+                       '#000080', '#ffa500', '#00ff7f', '#9acd32', '#f5f5f5',
+                       '#cacfd2', '#7b7d7d', '#909497', '#9b59b6', '#c0392b',
+                       '#d4efdf', '#616a6b', '#cacfd2', '#7b7d7d', '#909497',
+                       '#9b59b6', '#5499c7', '#2471a3', '#5b2c6f', '#117a65',
+                       '#a93226', '#d4efdf', '#85c1e9', '#5499c7', '#2471a3',
+                       '#5b2c6f', '#117a65', '#a93226',
                        ]
 
     def read_graph_from_path(self):
@@ -90,5 +90,12 @@ class Graph:
     def sort_graph_based_on_degree_centrality(self):
         pass
 
-    def get_node_with_bigger_degree_centrality(self, *nodes: list) -> int:
-        pass
+    def calculate_modularity(self):
+        communities = dict()
+        for node in self.get_nodes():
+            node_current_label = self.get_node_current_label(node=node)
+            if node_current_label not in communities:
+                communities[node_current_label] = {node}
+            else:
+                communities[node_current_label].add(node)
+        return nx.community.modularity(self.graph, [v for v in communities.values()])
